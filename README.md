@@ -1,2 +1,15 @@
 # CLI_filesystem
 Linux-like CLI for filesystem
+
+Programul primeste de la tastatura comenzi, pe care le salveaza ca stringuri si carora le asociaza indici, pentru a apela functiile corespunzatoare, atata timp cat nu este data comanda "delete fs", care determina iesirea din bucla, eliberarea memoriei si iesirea din program.
+Pentru fiecare functie care necesita folosirea unor date primite ca input, exista functii premergatoare care salveaza numele fisierelor si a directoarelor in variabile alocate dinamic.
+Structurile de tip nod asociate unui fisier sau unui director reprezinta noduri de liste dublu inlantuite pentru a facilita operatiile de stergere a fisierelor, respectiv a directoarelor (testarea proprietatii de cap de lista, legarea nodurilor ramase, dupa stergerea unuia).
+
+Se aloca memorie pentru radacina (create_fs). Pe parcursul programului, retinem in pointerul curr (current), de tip (Directory *) adresa directorului curent. Se pot efectua diverse operatii.
+Crearea unui nou fisier sau director (touch si mkdir) necesita alocare de memorie, apoi cautarea pozitiei in lista de fisiere/directoare a directorului curent, astfel incat sa se respecte ordinea lexicografica.
+Afisarea numelor fisierelor si a directoarelor (ls) din directorul curent (acestea fiind inlantuite in ordine lexicografica) se face parcurgand fiecare lista.
+Afisarea caii directorului (pwd) curent necesita o functie recursiva, care afiseaza numele directorului curent, un "/", apoi se autoapeleaza pentru directorul parinte al directorului curent, atata timp cat acesta exista (directorul curent nu este root).
+Schimbarea directorului (cd) curent presupune cautarea numelui in lista de fisiere si atunci cand este gasit chimbarea valorii variabilei curr.
+Afisarea arborescenta a subsistemului de fisiere si directoare (tree) presupune existenta unei variabile de tip int in care se afla numarul de spatii, reprezentand indentarea pe nivele. Aceasta variabila se actualizeaza de fiecare data cand functia se autoapeleaza, dupa afisarea numelui directorului in care se intra (tree este o functie recursiva), intrucat se inainteaza cu un nivel in adancime.
+Stergerea unui fisier/director din lista de fisiere/directoare a directorului curent (rm/rmdir) presupune "extragerea" nodului corespunzator fisierului/directorului pe care vrem sa il stergem din lista, refacerea legaturilor dintre nodurile de dinainte si de dupa nodul extras (daca exista) si eliberarea memoriei nodului de sters.
+Pentru functia find, ne folosim de o functie premergatoare care salveaza caracteristicile pentru cautare ca stringuri. Numarul nivelului maxim si dimensiunile minime si maxime sunt convertite prin atoi in intregi si folosite apoi in functie. Functia este una recursiva: cauta in sistemul de fisiere al directorului curent fisierele corespunzatoare cerintelor (si le afiseaza), apoi se autoapeleaza pentru fiecare nod din lista de directoare (decrementand nivelul maxim cu 1 la fiecare autoapelare, conditia de oprire fiind nivelul maxim < 0).
